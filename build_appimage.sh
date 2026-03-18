@@ -85,16 +85,16 @@ mkdir -p "Telescope.AppDir/usr/bin" "Telescope.AppDir/usr/lib" "Telescope.AppDir
 # include_system_library "libbrotlicommon.so.1"
 # include_system_library "libpcre2-8.so.0"
 
-install_server "0.51.0"
+install_server "0.51.1"
 
-install_client "flatland" "0.51.0"
-install_client_multi "protostar" "0.51.0" "hexagon_launcher"
-install_client "gravity" "0.51.0"
-install_client "black-hole" "0.51.0"
-install_client "solar-sailer" "0.51.0"
+install_client "flatland" "0.51.1"
+install_client_multi "protostar" "0.51.1" "hexagon_launcher"
+install_client "gravity" "0.51.1"
+install_client "black-hole" "0.51.1"
+install_client "solar-sailer" "0.51.1"
 
-install_client_multi "non-spatial-input" "0.51.0" "manifold"
-install_client_multi "non-spatial-input" "0.51.0" "simular"
+install_client_multi "non-spatial-input" "0.51.1" "manifold"
+install_client_multi "non-spatial-input" "0.51.1" "simular"
 
 cargo install --locked --git "https://github.com/Supreeeme/xwayland-satellite" --rev "v0.8" --root "Telescope.AppDir/usr"
 
