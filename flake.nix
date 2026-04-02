@@ -1,27 +1,36 @@
 {
-  description = "A simple default stardust setup";
+  description = "StardustXR based OpenXR Overlay";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     server = {
-      url = "github:StardustXR/server/dev";
+      url = "github:StardustXR/server";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flatland.follows = "flatland";
     };
     flatland = {
-      url = "github:StardustXR/flatland/dev";
+      url = "github:StardustXR/flatland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     protostar = {
-      url = "github:StardustXR/protostar/dev";
+      url = "github:StardustXR/protostar";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     gravity = {
-      url = "github:StardustXR/gravity/dev";
+      url = "github:StardustXR/gravity";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     black_hole = {
       url = "github:StardustXR/black-hole";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    solar_sailer = {
+      url = "github:StardustXR/solar-sailer";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    non_spatial_input = {
+      url = "github:StardustXR/non-spatial-input";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -40,6 +49,8 @@
             inputs'.protostar.packages.default
             inputs'.gravity.packages.default
             inputs'.black_hole.packages.default
+            inputs'.solar_sailer.packages.default
+            inputs'.non_spatial_input.packages.default
             pkgs.xwayland-satellite
           ];
           ## and this is the startup script
@@ -51,12 +62,14 @@
             fi
 
             xwayland-satellite :10 &
-            export DISPLAY=:10 &
-            sleep 0.1;
+            export DISPLAY=:10
 
             flatland &
             gravity -- 0 0.0 -0.5 hexagon_launcher &
+            gravity -- 0 0.1 -0.5 solar-sailer &
             black-hole &
+
+            WAYLAND_DISPLAY=$FLAT_WAYLAND_DISPLAY manifold | simular &
           '';
         };
         packages.flatscreen = pkgs.writeShellApplication {
@@ -70,7 +83,7 @@
             inputs'.server.packages.default
           ];
           text = ''
-          	stardust-xr-server -d -o 1 -e "${self'.packages.startup_script}/bin/startup_script" "$@"
+          	stardust-xr-server -d -o 6 -e "${self'.packages.startup_script}/bin/startup_script" "$@"
           '';
         };
         packages.default = self'.packages.telescope;
